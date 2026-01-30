@@ -26,7 +26,7 @@ telemetry = {
     "path": "WiFi",
     "armed": False,
     "mode": "DISCONNECTED",
-    "throttle": 1000,   # 🔥 RC throttle (CH3)
+    "throttle": 1000,   #  RC throttle (CH3)
     "motors_active": False,
     "tick": 0,
     "motor_pwm": {
@@ -70,7 +70,7 @@ def connect_mavlink():
             master.target_system,
             master.target_component,
             mavutil.mavlink.MAV_DATA_STREAM_RC_CHANNELS, 20, 1
-        )  # 🔥 RC INPUT (THROTTLE)
+        )  # RC INPUT (THROTTLE)
 
     except Exception as e:
         print("❌ MAVLink connect failed:", e)
@@ -158,7 +158,7 @@ async def mavlink_loop():
 
             # -------- RC INPUT (THROTTLE) --------
             elif t == "RC_CHANNELS":
-                telemetry["throttle"] = msg.chan3_raw  # 🔥 REAL throttle
+                telemetry["throttle"] = msg.chan3_raw  #  REAL throttle
 
             # -------- MOTOR OUTPUT --------
             elif t == "SERVO_OUTPUT_RAW":
@@ -226,3 +226,4 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("🛑 Server stopped")
+
