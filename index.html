@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drone Health & Control Monitor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="top-bar">
+    <div class="top-left">
+        <span class="dot alive"></span>
+        <span class="label">Heartbeat OK</span>
+    </div>
+
+    <div class="top-center">
+        <span class="status disarmed" id="armStatus">DISARMED</span>
+        <span class="mode" id="flightMode">AUTO</span>
+    </div>
+
+    <div class="top-right">
+        <span class="dot wifi"></span>
+        <span class="label" id="commPath">Connected via Wi-Fi</span>
+    </div>
+</header>
+
+<!-- MAIN LAYOUT -->
+<main class="layout">
+
+    <!-- LEFT PANEL -->
+    <aside class="left-panel">
+
+        <section>
+            <h3>Orientation</h3>
+            <div class="row"><span>Roll</span><span id="roll">0.0°</span></div>
+            <div class="row"><span>Pitch</span><span id="pitch">0.0°</span></div>
+            <div class="row"><span>Yaw</span><span id="yaw">180°</span></div>
+        </section>
+
+        <section>
+            <h3>Throttle & Motors</h3>
+            <div class="row"><span>Throttle</span><span id="throttle">1400 PWM</span></div>
+            <div class="row"><span>Motors</span><span id="motors">Active</span></div>
+        </section>
+
+        <section>
+            <h3>Battery & Power</h3>
+            <div class="row"><span>Voltage</span><span id="voltage">15.2 V</span></div>
+            <div class="row"><span>Status</span><span id="batteryState">Normal</span></div>
+        </section>
+
+        <!-- ✅ MOTOR PWM SECTION (ADDED CORRECTLY) -->
+        <section>
+            <h3>Motor Outputs (PWM)</h3>
+            <div class="row"><span>Motor 1</span><span id="m1">1000</span></div>
+            <div class="row"><span>Motor 2</span><span id="m2">1000</span></div>
+            <div class="row"><span>Motor 3</span><span id="m3">1000</span></div>
+            <div class="row"><span>Motor 4</span><span id="m4">1000</span></div>
+        </section>
+
+    </aside>
+
+    <!-- MAIN VIEW -->
+    <section class="main-view">
+        <h3>Live System Log</h3>
+        <div class="log-box" id="logBox"></div>
+
+        <div class="dedup">
+            <div><span>Images Received</span><strong id="rx">120</strong></div>
+            <div><span>Duplicates Dropped</span><strong id="dup">32</strong></div>
+        </div>
+
+        <!-- GPS SECTION -->
+        <div class="gps-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="margin: 0;">Live GPS Location</h3>
+                <button class="btn" style="padding: 5px 15px; font-size: 12px;" onclick="toggleMapMode()">Toggle Map/Satellite</button>
+            </div>
+            <div id="map"></div>
+
+            <div class="gps-readout">
+                <span>Latitude: <strong id="lat">18.5204</strong></span>
+                <span>Longitude: <strong id="lng">73.8567</strong></span>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- CAMERA SECTION -->
+<div class="camera-section">
+    <div class="camera-header">
+        <h3>Live Camera Feed</h3>
+        <div class="camera-controls">
+            <button class="btn small" onclick="startCamera()">Start</button>
+            <button class="btn small" onclick="stopCamera()">Stop</button>
+            <button class="btn known" onclick="toggleFullscreen()">Full Screen</button>
+        </div>
+    </div>
+
+    <div class="video-container">
+        <video id="cameraFeed" muted playsinline></video>
+    </div>
+</div>
+
+<!-- BOTTOM BAR -->
+<footer class="bottom-bar">
+    <button class="btn" onclick="arm()">ARM</button>
+    <button class="btn" onclick="disarm()">DISARM</button>
+    <button class="btn">START AUTONOMOUS MISSION</button>
+    <button class="btn">HOLD POSITION</button>
+    <button class="btn danger" onclick="emergency()">EMERGENCY STOP</button>
+</footer>
+
+<script src="next.js"></script>
+
+</body>
+</html>
